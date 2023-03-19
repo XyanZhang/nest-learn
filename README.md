@@ -15,3 +15,8 @@ src
     app.service.ts // A basic service with a single method.
     main.ts // The entry file of the application which uses the core function NestFactory to create a Nest application instance.
 ```
+### error Abort
+```ts
+NestFactory.create(AppModule, { abortOnError: false });
+// 该配置设置后 出现异常会抛出错误
+```
