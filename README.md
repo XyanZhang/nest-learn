@@ -20,3 +20,26 @@ src
 NestFactory.create(AppModule, { abortOnError: false });
 // 该配置设置后 出现异常会抛出错误
 ```
+
+## controller
+<div style="width: 60%">
+<img src="https://docs.nestjs.com/assets/Controllers_1.png">
+<div>
+
+```shell
+$ nest g controller cats # 生成controller， an optional route path prefix of cats； route: /cats
+```
+
+```js
+@Controller('cats')
+export class CatsController {
+  @Get()
+  findAll(): string { // match path: /cats ; findAll 函数名是随意定义的
+    return 'This action returns all cats'; 
+  }
+  @Get("test")
+  testRouteTest(): string { // match path: /cats/test 
+    return "This is a get route test";
+  }
+}
+```
