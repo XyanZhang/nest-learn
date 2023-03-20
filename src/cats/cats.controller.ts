@@ -42,6 +42,6 @@ export class CatsController {
     // 获取 res 
     let reqId = request.params.id;
     console.log(reqId); // get param
-    response.status(200).json({message: 'This is a get route test with param'});
+    response.status(200).json({status: 'ok', message: 'This is a get route test with param'});
   }
 }

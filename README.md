@@ -29,11 +29,9 @@ NestFactory.create(AppModule, { abortOnError: false });
 // 该配置设置后 出现异常会抛出错误
 ```
 
-## controller
-<div style="width: 60%">
-    <img src="https://docs.nestjs.com/assets/Controllers_1.png">
-<div>
+## controllers
 
+![controller](https://docs.nestjs.com/assets/Controllers_1.png)
 
 ```shell
 nest g controller cats # 生成controller， an optional route path prefix of cats； route: /cats
@@ -51,4 +49,16 @@ export class CatsController {
     return "This is a get route test";
   }
 }
+```
+
+## providers
+
+![provider](https://docs.nestjs.com/assets/Components_1.png)
+
+>
+> Controllers should handle HTTP requests and delegate more complex tasks to providers. Providers are plain JavaScript classes that are declared as providers in a module.
+>
+
+```shell
+nest g service cats # 生成controller， an optional route path prefix of cats； route: /cats
 ```
