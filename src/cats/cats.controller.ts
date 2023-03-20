@@ -1,8 +1,23 @@
-import { Controller, Get, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { response } from 'express';
+import { CatsService } from './cats.service';
+import { CreateCatDto } from './dto/create-cat.dto';
+import { Cat } from './interfaces/cat.interface';
 
 @Controller('cats')
 export class CatsController {
+
+  // Dependency injection#依赖注入
+  constructor(private catsService: CatsService) {}
+  
+  @Post('create')
+  async create(@Body() createCatDto: CreateCatDto) {
+    // 通过this.catsService.create(createCatDto)调用CatsService中的create方法
+    console.log(createCatDto) // post body
+    console.log(this) // post body
+    this.catsService.create(createCatDto);
+  }
+  
   @Get()
   findAll(): string {
     // match path: /cats ; findAll 函数名是随意定义的

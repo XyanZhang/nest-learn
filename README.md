@@ -62,3 +62,7 @@ export class CatsController {
 ```shell
 nest g service cats # 生成controller， an optional route path prefix of cats； route: /cats
 ```
+
+```nestjs
+
+```
