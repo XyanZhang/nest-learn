@@ -63,10 +63,6 @@ export class CatsController {
 nest g service cats # 生成controller， an optional route path prefix of cats； route: /cats
 ```
 
-```nestjs
-
-```
-
 ## modules
 
 ![provider](https://docs.nestjs.com/assets/Modules_1.png)
@@ -75,3 +71,100 @@ nest g service cats # 生成controller， an optional route path prefix of cats�
 > Each application has at least one module, a root module. The root module is the starting point Nest uses to build the application graph - the internal data structure Nest uses to resolve module and provider relationships and dependencies
 >
 
++ providers
+  + the providers that will be instantiated by the Nest injector and that may be shared at least across this module
++ controllers
+  + the set of controllers defined in this module which have to be instantiated
++ imports
+  + the list of imported modules that export the providers which are required in this module
++ exports
+  + the subset of providers that are provided by this module and should be available in other modules which import this module. You can use either the provider itself or just its token (provide value)
+
+`$ nest g module cats`
+
+```ts
+import { Module } from '@nestjs/common';
+import { CatsController } from './cats.controller';
+import { CatsService } from './cats.service';
+
+@Module({
+  controllers: [CatsController],
+  providers: [CatsService],
+})
+export class CatsModule {}
+```
+>
+> now any module that imports the CatsModule has access to the CatsService and will share the same instance with all other modules that import it as well
+>
+
+### Module re-exporting
+
+```ts
+@Module({
+  imports: [CommonModule],
+  exports: [CommonModule],
+})
+export class CoreModule {}
+```
+
+### Dependency injection
+
+```typescript
+import { Module } from '@nestjs/common';
+import { CatsController } from './cats.controller';
+import { CatsService } from './cats.service';
+
+@Module({
+  controllers: [CatsController],
+  providers: [CatsService],
+})
+export class CatsModule {
+  constructor(private catsService: CatsService) {}
+}
+// 说明：catsService 注入到 CatsModule中， 由于循环依赖关系，模块类本身不能作为提供程序被注入
+```
+
+### Global modules
+
+```typescript
+import { Module, Global } from '@nestjs/common';
+import { CatsController } from './cats.controller';
+import { CatsService } from './cats.service';
+
+@Global()
+@Module({
+  controllers: [CatsController],
+  providers: [CatsService],
+  exports: [CatsService],
+})
+export class CatsModule {}
+```
+### Dynamic modules
+
+```typescript
+import { Module, DynamicModule } from '@nestjs/common';
+import { createDatabaseProviders } from './database.providers';
+import { Connection } from './connection.provider';
+
+@Module({
+  providers: [Connection],
+})
+export class DatabaseModule {
+  static forRoot(entities = [], options?): DynamicModule {
+    const providers = createDatabaseProviders(options, entities);
+    return {
+      module: DatabaseModule,
+      providers: providers,
+      exports: providers,
+    };
+  }
+}
+
+// ./connection.provider
+{
+  global: true,
+  module: DatabaseModule,
+  providers: providers,
+  exports: providers,
+}
+```

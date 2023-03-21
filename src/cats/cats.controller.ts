@@ -3,19 +3,22 @@ import { response } from 'express';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { Cat } from './interfaces/cat.interface';
+import { GlobalService } from 'src/global/global.service';
 
 @Controller('cats')
 export class CatsController {
 
   // Dependency injection#依赖注入
-  constructor(private catsService: CatsService) {}
+  constructor(private catsService: CatsService, private readonly logger: GlobalService) {}
   
   @Post('create')
-  async create(@Body() createCatDto: CreateCatDto) {
+  async create(@Body() createCatDto: CreateCatDto, @Res() response) {
     // 通过this.catsService.create(createCatDto)调用CatsService中的create方法
     console.log(createCatDto) // post body
     console.log(this) // post body
+    this.logger.logTime();
     this.catsService.create(createCatDto);
+    response.status(200).json({status: 'ok', message: 'add ok', data: createCatDto});
   }
   
   @Get()
