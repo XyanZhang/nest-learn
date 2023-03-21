@@ -5,8 +5,10 @@ import { HttpService } from './http/http.service';
 import { CatsModule } from './cats/cats.module';
 import { GlobalModule } from './global/global.module';
 
+import { ConfigModule } from './config/config.module';
+
 @Module({
-  imports: [CatsModule, GlobalModule],
+  imports: [CatsModule, GlobalModule, ConfigModule.register({ folder: './config' })],
   controllers: [AppController],
   providers: [AppService, HttpService],
 })
