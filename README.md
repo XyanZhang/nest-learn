@@ -138,7 +138,23 @@ import { CatsService } from './cats.service';
   exports: [CatsService],
 })
 export class CatsModule {}
+
+// use
+import { LoggerService } from '../common/logger.service';
+@Controller('cats')
+export class CatsController {
+  // 通过构造函数注入
+  constructor(private readonly logger: LoggerService) {}
+
+  @Get()
+  findAll(): string {
+    // this上已挂载
+    this.logger.log('Find all cats');
+    return 'This action returns all cats';
+  }
+}
 ```
+
 ### Dynamic modules
 
 ```typescript
