@@ -237,3 +237,80 @@ const app = await NestFactory.create(AppModule);
 app.use(logger);
 await app.listen(3000);
 ```
+
+## Exception filters (异常处理)
+
+![exception](https://docs.nestjs.com/assets/Filter_1.png)
+
+```ts
+// 默认异常响应
+{
+  "statusCode": 500,
+  "message": "Internal server error"
+}
+```
+
+> The global exception filter partially supports the http-errors library. Basically, any thrown exception containing the statusCode and message properties will be properly populated and sent back as a response (instead of the default InternalServerErrorException for unrecognized exceptions).
+
+### Custom exceptions
+
+```typescript
+export class ForbiddenException extends HttpException {
+  constructor() {
+    super('Forbidden', HttpStatus.FORBIDDEN);
+  }
+}
+// use
+@Get()
+async findAll() {
+  throw new ForbiddenException();
+}
+```
+
+### Built-in HTTP exceptions #
+
+> 客户端错误
+
++ BadRequestException
++ UnauthorizedException
++ NotFoundException
++ ForbiddenException
++ NotAcceptableException
++ RequestTimeoutException
++ ConflictException
++ GoneException
++ PayloadTooLargeException
++ UnsupportedMediaTypeException
++ UnprocessableEntityException
+
+> 服务器错误
+
++ InternalServerErrorException
++ NotImplementedException
++ ImATeapotException
+
+> 网关错误
+
++ BadGatewayException
++ ServiceUnavailableException
++ GatewayTimeoutException
+
+> 其他错误
+
++ HttpVersionNotSupportedException
++ MethodNotAllowedException
++ PreconditionFailedException
+
+```ts
+throw new BadRequestException('Something bad happened', { 
+  cause: new Error(), 
+  description: 'Some error description' 
+})
+```
+
+> filter
+
+```ts
+// 全局异常过滤
+app.useGlobalFilters(new HttpExceptionFilter()); // 全局异常过滤器
+```

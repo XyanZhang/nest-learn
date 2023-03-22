@@ -1,10 +1,12 @@
-import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Post, Req, Res, UseFilters } from '@nestjs/common';
 import { response } from 'express';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { Cat } from './interfaces/cat.interface';
 import { GlobalService } from 'src/global/global.service';
 import { ConfigService } from '../config/config.service';
+import { ForbiddenException } from 'src/exception/forbidden.exception';
+import { HttpExceptionFilter } from 'src/filter/http-exception.filter';
 
 @Controller('cats')
 export class CatsController {
@@ -22,11 +24,54 @@ export class CatsController {
     response.status(200).json({status: 'ok', message: 'add ok', data: createCatDto});
   }
   
+  @Post('create/exception')
+  @UseFilters(new HttpExceptionFilter())
+  async createException(@Body() createCatDto: CreateCatDto, @Res() response) {
+    throw new ForbiddenException();
+  }
+
+  
   @Get()
   findAll(): string {
     // match path: /cats ; findAll 函数名是随意定义的
     return 'This action returns all cats';
   }
+
+  
+  @Get('exception')
+  async exceptionRes() {
+    // throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    // throw new HttpException('INTERNAL_SERVER_ERROR', HttpStatus.INTERNAL_SERVER_ERROR);
+    throw new ForbiddenException()
+  }
+  @Get('exception/500')
+  async exceptionRes500() {
+    throw new Error();
+    // {
+    //   "statusCode": 500,
+    //   "message": "Internal server error"
+    // }
+  }
+  @Get('exception/customRes')
+  async exceptionResCus() {
+    // 自定义异常响应
+    try {
+      throw new Error();
+    } catch (error) { 
+      throw new HttpException({
+        status: HttpStatus.FORBIDDEN,
+        error: 'This is a custom message',
+      }, HttpStatus.FORBIDDEN, {
+        cause: error
+      });
+    }
+    // {
+    //   "status": 403,
+    //   "error": "This is a custom message"
+    // }
+  }
+
+
   @Get('test')
   testRouteTest(): string {
     // match path: /cats/test
