@@ -168,6 +168,7 @@ import { Connection } from './connection.provider';
 export class DatabaseModule {
   static forRoot(entities = [], options?): DynamicModule {
     const providers = createDatabaseProviders(options, entities);
+    // 返回模块对象
     return {
       module: DatabaseModule,
       providers: providers,
@@ -176,11 +177,16 @@ export class DatabaseModule {
   }
 }
 
-// ./connection.provider
-{
-  global: true,
-  module: DatabaseModule,
-  providers: providers,
-  exports: providers,
+// use: 在需要引用的模块
+// module中
+@Module({
+  // ...
+  imports: [DatabaseModule]
+})
+// 需要使用的controller中
+export class CatsController {
+  // Dependency injection#依赖注入
+  constructor(private dataBase: DatabaseService) {} // 引入
+  // 就可以 this.dataBase 获取
 }
 ```
