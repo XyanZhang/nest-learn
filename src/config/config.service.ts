@@ -15,7 +15,7 @@ export class ConfigService {
     this.envConfig = dotenv.parse(fs.readFileSync(envFile));
   }
 
-  get(key: string): string {
+  getConfig(key: string ): string{
     return this.envConfig[key];
   }
 }

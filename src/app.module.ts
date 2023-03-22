@@ -8,7 +8,7 @@ import { GlobalModule } from './global/global.module';
 import { ConfigModule } from './config/config.module';
 
 @Module({
-  imports: [CatsModule, GlobalModule, ConfigModule.register({ folder: './config' })],
+  imports: [CatsModule, GlobalModule],
   controllers: [AppController],
   providers: [AppService, HttpService],
 })

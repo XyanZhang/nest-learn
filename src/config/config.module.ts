@@ -1,10 +1,10 @@
-import { Module } from "@nestjs/common";
+import { DynamicModule, Module } from "@nestjs/common";
 import { ConfigService } from "./config.service";
 import { CONFIG_OPTIONS } from "./constants";
 
 @Module({})
 export class ConfigModule {
-  public static register(configObj: configObj) {
+  public static register(configObj: configObj): DynamicModule  {
     console.log('use register, configObj: ', configObj);
     return {
       module: ConfigModule,

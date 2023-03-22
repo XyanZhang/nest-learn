@@ -4,12 +4,13 @@ import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { Cat } from './interfaces/cat.interface';
 import { GlobalService } from 'src/global/global.service';
+import { ConfigService } from '../config/config.service';
 
 @Controller('cats')
 export class CatsController {
 
   // Dependency injection#依赖注入
-  constructor(private catsService: CatsService, private readonly logger: GlobalService) {}
+  constructor(private catsService: CatsService, private readonly logger: GlobalService, private envConfig: ConfigService) {}
   
   @Post('create')
   async create(@Body() createCatDto: CreateCatDto, @Res() response) {
@@ -61,5 +62,11 @@ export class CatsController {
     let reqId = request.params.id;
     console.log(reqId); // get param
     response.status(200).json({status: 'ok', message: 'This is a get route test with param'});
+  }
+  @Get('config')
+  getConfig():string {
+    let config = this.envConfig.getConfig('HELLO_MESSAGE');
+    console.log(config); // 打印配置文件中的 HELLO_MESSAGE
+    return config;
   }
 }
