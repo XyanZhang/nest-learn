@@ -190,3 +190,50 @@ export class CatsController {
   // 就可以 this.dataBase 获取
 }
 ```
+
+## Middleware
+
+![middleware](https://docs.nestjs.com/assets/Middlewares_1.png)
+
+> Middleware functions can perform the following tasks:
+
++ execute any code.
++ make changes to the request and the response objects.
++ end the request-response cycle.
++ call the next middleware function in the stack.
++ if the current middleware function does not end the request-response cycle, it must call next() to pass control to the next middleware function. Otherwise, the request will be left hanging.
+
+```ts
+import { Injectable, NestMiddleware } from '@nestjs/common';
+import { Request, Response, NextFunction } from 'express';
+
+@Injectable()
+export class LoggerMiddleware implements NestMiddleware {
+  use(req: Request, res: Response, next: NextFunction) {
+    console.log('Request...');
+    next();
+  }
+}
+// Applying middleware#
+import { LoggerMiddleware } from './common/middleware/logger.middleware';
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LoggerMiddleware)
+      // .apply(cors(), helmet(), logger)  // 可使用多个中间件
+      .exclude( // 排除 (using the path-to-regexp package.)
+        { path: 'cats', method: RequestMethod.GET },
+        { path: 'cats', method: RequestMethod.POST },
+        'cats/(.*)',
+      )
+      // .forRoutes('cats');
+      // .forRoutes({ path: 'cats', method: RequestMethod.GET });
+      .forRoutes({ path: 'c**s', method: RequestMethod.GET });
+  }
+}
+
+// 全局中间件
+const app = await NestFactory.create(AppModule);
+app.use(logger);
+await app.listen(3000);
+```
