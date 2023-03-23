@@ -77,6 +77,7 @@ nest g service cats # 生成controller， an optional route path prefix of cats�
   + the providers that will be instantiated by the Nest injector and that may be shared at least across this module
 + controllers
   + the set of controllers defined in this module which have to be instantiated
+  + 一个模块如果要调用其他模块的提供者，必须先在其他中使用exports导出，然后在需要使用模块中使用imports导入
 + imports
   + the list of imported modules that export the providers which are required in this module
 + exports
