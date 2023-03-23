@@ -55,6 +55,8 @@ export class CatsController {
 
 ![provider](https://docs.nestjs.com/assets/Components_1.png)
 
+注册与导出: 提供者需要在模块元元素的providers中注册才可以被本模块的其它类注入，需要在exports中导出后才能被其它模块调用
+
 >
 > Controllers should handle HTTP requests and delegate more complex tasks to providers. Providers are plain JavaScript classes that are declared as providers in a module.
 >
