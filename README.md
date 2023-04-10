@@ -270,7 +270,7 @@ async findAll() {
 }
 ```
 
-### Built-in HTTP exceptions #
+### Built-in HTTP exceptions
 
 > 客户端错误
 
@@ -317,3 +317,13 @@ throw new BadRequestException('Something bad happened', {
 // 全局异常过滤
 app.useGlobalFilters(new HttpExceptionFilter()); // 全局异常过滤器
 ```
+
+### Injection scopes
+
+A provider can have any of the following scopes:
+
++ DEFAULT A single instance of the provider is shared across the entire application. The instance lifetime is tied directly to the application lifecycle. Once the application has bootstrapped, all singleton providers have been instantiated. Singleton scope is used by default.
+
++ REQUEST A new instance of the provider is created exclusively for each incoming request. The instance is garbage-collected after the request has completed processing.
+
++ TRANSIENT Transient providers are not shared across consumers. Each consumer that injects a transient provider will receive a new, dedicated instance.
