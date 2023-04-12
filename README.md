@@ -327,3 +327,14 @@ A provider can have any of the following scopes:
 + REQUEST A new instance of the provider is created exclusively for each incoming request. The instance is garbage-collected after the request has completed processing.
 
 + TRANSIENT Transient providers are not shared across consumers. Each consumer that injects a transient provider will receive a new, dedicated instance.
+
+## Q&A
+
+Q: 1. 为什么要使用 DynamicModule
+> DynamicModule 是一个特殊的模块，它可以在运行时动态地创建模块，而不是在编译时创建模块。
+@: 2. 为什么要使用 global
+> global 属性表示该模块是否是全局模块，如果设置为 true，那么该模块就会被所有的模块所共享。
+Q: 3. 为什么要使用 useFactory
+> useFactory 是一个工厂函数，它会在模块初始化的时候被调用，而不是在编译时调用。
+Q: 4. 为什么要使用 CommonService
+> CommonService 是一个服务，它会在模块初始化的时候被调用，而不是在编译时调用。
