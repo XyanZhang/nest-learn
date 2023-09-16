@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Session } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -8,5 +8,11 @@ export class AppController {
   @Get()
   getHello(): string {
     return this.appService.getHello();
+  }
+  @Get('sessionGet')
+  sessionGet(@Session() session) {
+    console.log(session)
+    session.count = session.count ? session.count  + 1 : 1;
+    return session.count 
   }
 }
