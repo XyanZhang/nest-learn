@@ -7,9 +7,28 @@ import { GlobalModule } from './global/global.module';
 import { LoggerMiddleware } from './middleware/logger.middleware';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './filter/http-exception.filter';
-
+import { JwtModule } from '@nestjs/jwt';
 @Module({
-  imports: [CatsModule, GlobalModule],
+  imports: [
+    // JwtModule.register({
+    //   secret: 'kenanyah',
+    //   signOptions: {
+    //     expiresIn: '7d'
+    //   }
+    // }),
+    JwtModule.registerAsync({
+      async useFactory() {
+
+        await 111;
+        return {
+          secret: 'kenanyah',
+          signOptions: {
+            expiresIn: '7d'
+          }
+        }
+      }
+    }),
+    CatsModule, GlobalModule],
   controllers: [AppController],
   providers: [AppService, HttpService,
     {
