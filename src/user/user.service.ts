@@ -6,6 +6,13 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { RegisterDto } from './dto/register.dto';
 import { UsersService } from 'src/users/users.service';
+import * as crypto from 'crypto';
+
+function md5(str) {
+  const hash = crypto.createHash('md5');
+  hash.update(str);
+  return hash.digest('hex');
+}
 
 @Injectable()
 export class UserService {
@@ -24,6 +31,7 @@ export class UserService {
     }
     const newUser = new User();
     newUser.username = user.username;
+    // 后端用户进行md5 加密 newUser.password = md5(user.password);
     newUser.password = user.password;
 
     try {
