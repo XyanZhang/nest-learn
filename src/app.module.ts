@@ -14,12 +14,6 @@ import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
-    // JwtModule.register({
-    //   secret: 'kenanyah',
-    //   signOptions: {
-    //     expiresIn: '7d'
-    //   }
-    // }),
     TypeOrmModule.forRoot({
       type: "mysql",
       host: "localhost",
@@ -36,18 +30,24 @@ import { UserModule } from './user/user.module';
           authPlugin: 'sha256_password',
       }
     }),
-    JwtModule.registerAsync({
-      async useFactory() {
-
-        await 111;
-        return {
-          secret: 'kenanyah',
-          signOptions: {
-            expiresIn: '7d'
-          }
-        }
+    JwtModule.register({
+      global: true,
+      secret: 'kenanyah',
+      signOptions: {
+        expiresIn: '7d'
       }
     }),
+    // JwtModule.registerAsync({
+    //   async useFactory() {
+    //     await 111;
+    //     return {
+    //       secret: 'kenanyah',
+    //       signOptions: {
+    //         expiresIn: '7d'
+    //       }
+    //     }
+    //   }
+    // }),
     CatsModule, GlobalModule, UserModule],
   controllers: [AppController],
   providers: [AppService, HttpService,

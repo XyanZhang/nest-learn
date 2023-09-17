@@ -31,8 +31,9 @@ export class UserService {
     }
     const newUser = new User();
     newUser.username = user.username;
-    // 后端用户进行md5 加密 newUser.password = md5(user.password);
-    newUser.password = user.password;
+    // 后端用户进行md5 加密 
+    newUser.password = md5(user.password);
+    // newUser.password = user.password;
 
     try {
       await this.userRepository.save(newUser);
@@ -50,8 +51,8 @@ export class UserService {
     if(!foundUser) {
       throw new HttpException('用户名不存在', 200);
     }
-    // if(foundUser.password !== md5(user.password)) {
-    if(foundUser.password !== user.password) {
+    if(foundUser.password !== md5(user.password)) {
+    // if(foundUser.password !== user.password) {
       throw new HttpException('密码错误', 200);
     }
     return foundUser;
@@ -76,5 +77,4 @@ export class UserService {
   remove(id: number) {
     return `This action removes a #${id} user`;
   }
-
 }
