@@ -1,6 +1,7 @@
-import { Controller, Get, Inject, Res, Session} from '@nestjs/common';
+import { Controller, Get, Inject, Res, Session, UseGuards} from '@nestjs/common';
 import { AppService } from './app.service';
 import { JwtService } from '@nestjs/jwt';
+import { LoginGuard } from './login.guard';
 
 @Controller()
 export class AppController {
@@ -10,6 +11,7 @@ export class AppController {
   private jwtService: JwtService;
 
   @Get()
+  @UseGuards(LoginGuard)
   getHello(): string {
     return this.appService.getHello();
   }
